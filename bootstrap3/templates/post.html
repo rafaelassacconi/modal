@@ -1,0 +1,36 @@
+{% extends 'base_modal.html' %}
+
+{% block title %}
+    <h4>Post</h4>
+{% endblock %}
+
+{% block form_action %}
+	{% if post %}
+		{% url 'post' post.id %}
+	{% else %}
+		{% url 'post' %}
+	{% endif %}
+{% endblock %}
+
+{% block buttons %}
+	<button type="submit" class="btn btn-primary">Save</button>
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group {% if form.title.errors %}has-error{% endif %}">
+				<label class="control-label">Title</label>
+				<input class="form-control" name="title" value="{{ form.title.value|default:"" }}" maxlength="100" placeholder="Post title"/>
+				<span class="help-block">{{ form.title.errors|striptags }}</span>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="form-group {% if form.text.errors %}has-error{% endif %}">
+				<label class="control-label">Text</label>
+				<textarea class="form-control" name="text" placeholder="Post content">{{ form.text.value|default:"" }}</textarea>
+				<span class="help-block">{{ form.text.errors|striptags }}</span>
+			</div>
+		</div>  							
+	</div>
+{% endblock %}

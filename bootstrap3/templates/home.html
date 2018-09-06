@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h1>Django Modal</h1>
+        <p>Bootstrap modal inside Django Framework.</p>
+        <p>
+            <a class="btn btn-primary btn-lg openModal" data-toggle="modal" data-target="#modal"
+               href="javascript:void(0);" role="button" rel="{% url 'post' %}">
+                Bootstrap 3
+            </a>
+            {% comment %}
+                <a class="btn btn-default btn-lg" href="javascript:void(0);" role="button">
+                    Bootstrap 4
+                </a>
+            {% endcomment %}
+        </p>    
+    </div>
+
+    {% if posts %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Text</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td>
+                            <a class="openModal" href="javascript:void(0);" rel="{% url 'post' post.id %}"
+                               data-toggle="modal" data-target="#modal">
+                                {{ post.title }}
+                            </a>
+                        </td>
+                        <td>{{ post.text }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}    
+{% endblock %}

@@ -1,0 +1,65 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">
+				<span aria-hidden="true">&times;</span>
+				<span class="sr-only">Close</span>
+			</button>
+			<h4 class="modal-title">{% block title %}{% endblock %}</h4>
+		</div>
+		<form action="{% block form_action %}{% endblock %}" method="post">
+			{% csrf_token %}
+			<div class="modal-body">
+				<!-- Django Alerts -->
+				{% if messages %}
+					{% for message in messages %}
+						{% if message.tags == 'success' %}
+							<div class="alert alert-success">
+								<i class="fa fa-check-circle"></i>
+								<strong>OK!</strong> {{ message }}
+							</div>
+						{% elif message.tags == 'error' %}
+							<div class="alert alert-danger">
+								<i class="fa fa-times-circle"></i>
+								<strong>Error!</strong> {{ message }}
+							</div>
+						{% elif message.tags == 'warning' %}	
+							<div class="alert alert-warning">
+								<i class="fa fa-exclamation-circle"></i>
+								<strong>Warning!</strong> {{ message }}
+							</div>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+				
+				<!-- Modal Content -->
+				{% block content %}{% endblock %}
+			</div>
+
+			<!-- Modal Footer -->
+			<div class="modal-footer">
+				{% block buttons %}
+				    <button type="button" class="btn btn-default" data-dismiss="modal">Return</button>
+				{% endblock %}
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+$(function(){
+	$('input, textarea, select').addClass('form-control');
+	$('input[type="checkbox"]').removeClass('form-control');
+
+    $('form').on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $('form').serialize(),
+            success: function(data){
+            	$('.modal-dialog').replaceWith(data);
+            }
+        });
+    });
+});
+</script>
